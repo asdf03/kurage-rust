@@ -1,16 +1,25 @@
-use actix_web::{web, App, HttpServer, Responder};
+use std::fmt::format;
 
-async fn index() -> impl Responder {
-    "Hello world!"
+use actix_web::{get, web, App, HttpServer};
+
+struct AppState {
+    app_name: String,
+}
+
+#[get("/")]
+async fn index(data: web::Data<AppState>) -> String {
+    let app_name = &data.app_name;
+    format!("Hello {app_name}!")
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
-        App::new().service(
-            web::scope("/app")
-                .route("index.html", web::get().to(index)),
-        )
+        App::new()
+            .app_data(web::Data::new(AppState {
+                app_name: String::from("Actix Web"),
+            }))
+            .service(index)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
