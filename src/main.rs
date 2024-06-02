@@ -1,27 +1,23 @@
-use actix_web::{web, App, HttpServer};
-use std::sync::Mutex;
-
-struct AppStateWithCounter {
-    counter: Mutex<i32>,
-}
-
-async fn index(data: web::Data<AppStateWithCounter>) -> String {
-    let mut counter = data.counter.lock().unwrap();
-    *counter += 1;
-
-    format!("Request number: {counter}")
-}
+use actix_web::{guard, web::{self, scope}, App, HttpResponse, HttpServer, Responder};
+use tokio::io::AsyncBufRead;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let counter = web::Data::new(AppStateWithCounter {
-        counter: Mutex::new(0),
-    });
-
-    HttpServer::new(move || {
+    HttpServer::new(|| {
         App::new()
-            .app_data(counter.clone()) // ユーザー間でデータが共有される
-            .route("/", web::get().to(index))
+            .service(
+                web::scope("/")
+                    // curl -H "Host: www.rust-lang.org" http://127.0.0.1:8080
+                    .guard(guard::Header("Host", "www.rust-lang.org"))
+                    .route("", web::to(|| async { HttpResponse::Ok().body("www") })),
+            )
+            .service(
+                web::scope("/")
+                    // curl -H "Host: users.rust-lang.org" http://127.0.0.1:8080
+                    .guard(guard::Header("Host", "users.rust-lang.org"))
+                    .route("", web::to(|| async { HttpResponse::Ok().body("user") }))
+            )
+            .route("/", web::to(HttpResponse::Ok))
     })
     .bind(("127.0.0.1", 8080))?
     .run()
