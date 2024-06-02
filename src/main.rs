@@ -1,5 +1,4 @@
-use actix_web::{guard, web::{self, scope}, App, HttpResponse, HttpServer, Responder};
-use tokio::io::AsyncBufRead;
+use actix_web::{guard, web, App, HttpResponse, HttpServer};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
