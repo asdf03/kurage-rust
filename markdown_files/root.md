@@ -8,3 +8,5 @@ This is a sample markdown content.
  - こんにちは
 
 ## クラス付与テスト
+
+![サンプル画像](/static/images/test.png)
