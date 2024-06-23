@@ -1,4 +1,5 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use actix_files::NamedFile;
+use actix_web::{get, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use comrak::{markdown_to_html, ComrakOptions};
 use std::fs;
 use std::path::Path;
@@ -18,12 +19,23 @@ async fn root_page() -> impl Responder {
     HttpResponse::Ok().content_type("text/html; charset=utf-8").body(html_output)
 }
 
+#[get("/static/{file_type}/{file_name}")]
+async fn static_files(path: actix_web::web::Path<(String, String)>, req: HttpRequest) -> impl Responder {
+    let (file_type, file_name) = path.into_inner();
+    let file_path = Path::new("static").join(file_type).join(file_name);
+
+    match NamedFile::open(file_path) {
+        Ok(file) => file.into_response(&req),
+        Err(_) => HttpResponse::NotFound().body("File not found"),
+    }
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(root_page)
-            // .service(static_fies)
+            .service(static_files)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
