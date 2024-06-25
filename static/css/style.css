@@ -1,3 +1,18 @@
-.custum-header {
-    color: blue;
+body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, table, th, td, a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+body {
+    line-height: 1;
+}
+ul, ol {
+    list-style: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
