@@ -43,11 +43,18 @@ async fn blog_page(path: web::Path<String>) -> impl Responder {
     let mut options = ComrakOptions::default();
     options.render.unsafe_ = true;
 
-    let mut html_output = markdown_to_html(&markdown_input, &options);
+    let html_output = markdown_to_html(&markdown_input, &options);
 
-    html_output = html_output.replace("<h2>", "<h2 class=\"custum-header\">");
+    let html_header = load_template("header.html").await.replace("{title}", "Hoge");
+    let html_footer = load_template("footer.html").await;
+    let html_page = format!(
+        "{}{}{}",
+        html_header,
+        html_output,
+        html_footer
+    );
 
-    HttpResponse::Ok().content_type("text/html; charset=utf-8").body(html_output)
+    HttpResponse::Ok().content_type("text/html; charset=utf-8").body(html_page)
 }
 
 #[get("/static/{file_type}/{file_name}")]
