@@ -30,7 +30,10 @@ async fn root_page() -> Html<String> {
     Html(html_page)
 }
 
-async fn static_files(AxumPath((file_type, file_name)): AxumPath<(String, String)>) -> axum::http::Response<axum::body::Body> {
+
+async fn static_files(
+    AxumPath((file_type, file_name)): AxumPath<(String, String)>
+) -> axum::http::Response<axum::body::Body> {
     let file_path = Path::new("static").join(file_type).join(file_name);
     if let Ok(file_content) = tokio::fs::read(&file_path).await {
         axum::http::Response::builder()
