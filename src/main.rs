@@ -4,8 +4,10 @@ use axum::{
     response::Html,
     extract::Path as AxumPath,
 };
+use shuttle_axum::ShuttleAxum;
 use comrak::{markdown_to_html, ComrakOptions};
 use std::{fs, path::Path};
+
 
 async fn load_template(template_name: &str) -> String {
     let template_path = Path::new("static").join("html").join(template_name);
@@ -64,16 +66,12 @@ async fn static_files(
     }
 }
 
-#[tokio::main]
-async fn main() {
-    let app = Router::new()
+#[shuttle_runtime::main]
+async fn axum_service() -> ShuttleAxum {
+    let app = Router.new()
         .route("/", get(root_page))
-        .route("/blog/:file_name", get(blog_page))
-        .route("/static/:file_type/:file_name", get(static_files));
-    
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
-        .await
-        .unwrap();
+        .route("/blog/{file_name}", get(blog_page))
+        .route("/static/{file_name}", get(static_files));
 
-    axum::serve(listener, app).await.unwrap();
+    OK(app.into())
 }
