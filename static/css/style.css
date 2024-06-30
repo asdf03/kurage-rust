@@ -16,3 +16,17 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+/*================================================
+ * ヘッダーコンテンツ
+ ================================================*/
+
+.header {
+    width: 100%;
+}
+
+.header-inner {
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2)
+}
