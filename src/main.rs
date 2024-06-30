@@ -68,10 +68,10 @@ async fn static_files(
 
 #[shuttle_runtime::main]
 async fn axum_service() -> ShuttleAxum {
-    let app = Router.new()
+    let app = Router::new()
         .route("/", get(root_page))
         .route("/blog/{file_name}", get(blog_page))
         .route("/static/{file_name}", get(static_files));
 
-    OK(app.into())
+    Ok(app.into())
 }
