@@ -72,7 +72,7 @@ async fn main() {
         .route("/blog/:file_name", get(blog_page))
         .route("/static/:file_type/:file_name", get(static_files));
     
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8081")
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
         .unwrap();
 
