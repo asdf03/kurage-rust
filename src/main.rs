@@ -7,7 +7,6 @@ use axum::{
 use comrak::{markdown_to_html, ComrakOptions};
 use std::{fs, path::Path};
 
-
 async fn load_template(template_name: &str) -> String {
     let template_path = Path::new("static").join("html").join(template_name);
     fs::read_to_string(template_path).expect(&format!("Failed to read {}", template_name))
@@ -48,7 +47,6 @@ async fn blog_page(
 
 }
 
-
 async fn static_files(
     AxumPath((file_type, file_name)): AxumPath<(String, String)>
 ) -> axum::http::Response<axum::body::Body> {
@@ -67,7 +65,6 @@ async fn static_files(
     }
 }
 
-
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -75,7 +72,7 @@ async fn main() {
         .route("/blog/:file_name", get(blog_page))
         .route("/static/:file_type/:file_name", get(static_files));
     
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8081")
         .await
         .unwrap();
 
