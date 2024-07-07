@@ -1,10 +1,13 @@
+mod domain;
 mod infrastructure;
+mod interface;
 
 use crate::infrastructure::db::create_db_pool;
+use crate::interface::routes;
 
 
 use axum::{
-    routing::get,
+    routing::{get, post},
     Router,
     response::Html,
     extract::Path as AxumPath,

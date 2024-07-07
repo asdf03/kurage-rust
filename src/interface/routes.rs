@@ -1,5 +1,8 @@
 use crate::domain::user::{RegisterForm, LoginForm};
 use axum::{Extension, Form, http::StatusCode, response::IntoResponse};
+use sqlx::PgPool;
+use std::sync::Arc;
+use tokio::sync::Mutex;
 
 pub async fn register(
     Form(form): Form<RegisterForm>,
