@@ -1,3 +1,8 @@
+mod infrastructure;
+
+use crate::infrastructure::db::create_db_pool;
+
+
 use axum::{
     routing::get,
     Router,
@@ -5,7 +10,8 @@ use axum::{
     extract::Path as AxumPath,
 };
 use comrak::{markdown_to_html, ComrakOptions};
-use std::{fs, path::Path};
+use std::{fs, path::Path, sync::{Arc, Mutex}};
+
 
 async fn load_template(template_name: &str) -> String {
     let template_path = Path::new("static").join("html").join(template_name);
@@ -67,7 +73,12 @@ async fn static_files(
 
 #[tokio::main]
 async fn main() {
+    let secret = Arc::new(std::env::var("SECRET_KEY").expect("SECRET_KEY must be set"));
+    let db_pool = create_db_pool().await;
+    let shared  = Arc::new(Mutex::new(db_pool));
+
     let app = Router::new()
+        // .route("/register", post(routes::register))
         .route("/", get(root_page))
         .route("/blog/:file_name", get(blog_page))
         .route("/static/:file_type/:file_name", get(static_files));
