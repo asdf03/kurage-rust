@@ -10,3 +10,19 @@ pub async fn create_db_pool() -> PgPool {
         .await
         .expect("Failed to create pool")
 }
+
+pub async fn insert_user(db: &PgPool, user_id: &str, email_hash: &str, password_hash: &str) -> Result<(), sqlx::Error> {
+    sqlx::query!(
+        r#"
+        INSERT INTO users (id, email, password)
+        VALUES ($1, $2, $3)
+        "#,
+        user_id,
+        email_hash,
+        password_hash
+    )
+    .execute(db)
+    .await?;
+
+    Ok(())
+}
