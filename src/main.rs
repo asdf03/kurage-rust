@@ -1,16 +1,14 @@
 mod domain;
+mod rest;
 mod infrastructure;
 mod interface;
 
 use crate::infrastructure::db::create_db_pool;
-use crate::interface::routes;
+use crate::rest::auth::auth_register;
 
 
 use axum::{
-    routing::{get, post},
-    Router,
-    response::Html,
-    extract::Path as AxumPath,
+    extract::Path as AxumPath, response::Html, routing::{get, post}, Extension, Router
 };
 use comrak::{markdown_to_html, ComrakOptions};
 use std::{fs, path::Path, sync::{Arc, Mutex}};
@@ -76,15 +74,16 @@ async fn static_files(
 
 #[tokio::main]
 async fn main() {
-    let secret = Arc::new(std::env::var("SECRET_KEY").expect("SECRET_KEY must be set"));
     let db_pool = create_db_pool().await;
-    let shared  = Arc::new(Mutex::new(db_pool));
+    let db_pool = Arc::new(Mutex::new(db_pool));
 
     let app = Router::new()
-        // .route("/register", post(routes::register))
+        // .route("/register", post(auth_register))
         .route("/", get(root_page))
         .route("/blog/:file_name", get(blog_page))
-        .route("/static/:file_type/:file_name", get(static_files));
+        .route("/static/:file_type/:file_name", get(static_files))
+        .layer(Extension(db_pool));
+
     
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
