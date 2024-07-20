@@ -3,7 +3,7 @@ mod rest;
 mod infrastructure;
 mod interface;
 
-use crate::infrastructure::db::create_db_pool;
+// use crate::infrastructure::db::create_db_pool;
 use crate::rest::auth::auth_register;
 
 
@@ -74,15 +74,15 @@ async fn static_files(
 
 #[tokio::main]
 async fn main() {
-    let db_pool = create_db_pool().await;
-    let db_pool = Arc::new(Mutex::new(db_pool));
+    // let db_pool = create_db_pool().await;
+    // let db_pool = Arc::new(Mutex::new(db_pool));
 
     let app = Router::new()
         // .route("/register", post(auth_register))
         .route("/", get(root_page))
         .route("/blog/:file_name", get(blog_page))
-        .route("/static/:file_type/:file_name", get(static_files))
-        .layer(Extension(db_pool));
+        .route("/static/:file_type/:file_name", get(static_files));
+        // .layer(Extension(db_pool));
 
     
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
