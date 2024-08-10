@@ -5,6 +5,7 @@ body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, table, th, td, a {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    box-sizing: border-box;
 }
 body {
     line-height: 1;
@@ -16,3 +17,66 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    vertical-align: bottom;
+}
+
+/** ==================================================
+ * header
+ *==================================================*/
+
+.header {
+    width: 100%;
+}
+
+.header-inner {
+    display: flex;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 30px 120px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-box {
+    width: 5%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.header-nav {
+    width: 50%;
+}
+
+.header-nav ul {
+    display: flex;
+    justify-content: space-around;
+}
+
+.header-nav li {
+    font-size: 16px;
+}
+
+
+/** ==================================================
+ * kv
+ *==================================================*/
+
+.vk {
+    height: 500px;
+}
+
+.vk .img-box {
+    height: inherit;
+}
+
+/** ==================================================
+ * main
+ *==================================================*/
+
+ main {
+    width: 100%;
+ }
