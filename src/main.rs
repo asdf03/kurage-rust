@@ -5,6 +5,7 @@ mod interface;
 
 // use crate::infrastructure::db::create_db_pool;
 use crate::rest::auth::auth_register;
+use crate::rest::blog;
 
 
 use axum::{
@@ -79,8 +80,7 @@ async fn main() {
 
     let app = Router::new()
         // .route("/register", post(auth_register))
-        .route("/", get(root_page))
-        .route("/blog/:file_name", get(blog_page))
+        .nest("/", blog::router())
         .route("/static/:file_type/:file_name", get(static_files));
         // .layer(Extension(db_pool));
 
