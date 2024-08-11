@@ -80,7 +80,7 @@ async fn main() {
 
     let app = Router::new()
         // .route("/register", post(auth_register))
-        .nest("/", blog::router())
+        .nest("/blog", blog::router())
         .route("/static/:file_type/:file_name", get(static_files));
         // .layer(Extension(db_pool));
 
