@@ -1,17 +1,8 @@
 use axum::{routing::get, Router};
+use crate::usecase::blog_usecase;
 
 pub fn router() -> Router {
   Router::new()
-    .route("/", get(root_page))
-    .route("/:file_name", get(blog_page))
-}
-
-pub async fn root_page() -> &'static str {
-  // Todo
-  "root_page"
-}
-
-pub async fn blog_page() -> &'static str {
-  // Todo
-  "blog_page"
+    .route("/", get(blog_usecase::root_page))
+    .route("/:file_name", get(blog_usecase::blog_page))
 }
