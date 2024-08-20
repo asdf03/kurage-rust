@@ -2,7 +2,7 @@ use axum::{
   routing::get,
   Router
 };
-use crate::usecase::static_usecase::static_files;
+use crate::usecase::static_files_usecase::static_files;
 
 pub fn create_static_router() -> Router {
   Router::new()

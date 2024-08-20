@@ -42,28 +42,8 @@ async fn blog_page(
 	Html(html_page)
 }
 
-async fn static_files(
-	AxumPath((file_type, file_name)): AxumPath<(String, String)>
-) -> axum::http::Response<axum::body::Body> {
-	let file_path = Path::new("static").join(file_type).join(file_name);
-	if let Ok(file_content) = tokio::fs::read(&file_path).await {
-		axum::http::Response::builder()
-			.status(axum::http::StatusCode::OK)
-			.header(axum::http::header::CONTENT_TYPE, mime_guess::from_path(&file_path).first_or_octet_stream().as_ref())
-			.body(axum::body::Body::from(file_content))
-			.expect("Failed to construct response")
-	} else {
-		axum::http::Response::builder()
-			.status(axum::http::StatusCode::NOT_FOUND)
-			.body(axum::body::Body::empty())
-			.expect("Failed to construct response")
-	}
-}
-
 #[tokio::main]
 async fn main() {
-	// let db_pool = create_db_pool().await;
-	// let db_pool = Arc::new(Mutex::new(db_pool));
 
 	let app = Router::new()
 		.merge(create_blog_router())
