@@ -7,7 +7,7 @@ mod usecase;
 // use crate::infrastructure::db::create_db_pool;
 use crate::rest::auth::auth_register;
 
-use crate::rest::blog;
+use crate::rest::blog::create_router;
 
 
 use axum::{
@@ -80,16 +80,13 @@ async fn main() {
     // let db_pool = create_db_pool().await;
     // let db_pool = Arc::new(Mutex::new(db_pool));
 
-    let app = Router::new()
-        // .route("/register", post(auth_register))
-        .nest("/blog", blog::router())
-        .route("/static/:file_type/:file_name", get(static_files));
-        // .layer(Extension(db_pool));
-
+    let app = create_router();
     
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
         .unwrap();
 
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .await
+        .unwrap();
 }

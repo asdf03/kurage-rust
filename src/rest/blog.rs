@@ -1,8 +1,7 @@
 use axum::{routing::get, Router};
-use crate::usecase::blog_usecase;
+use crate::usecase::blog_usecase::root_page;
 
-pub fn router() -> Router {
+pub fn create_router() -> Router {
   Router::new()
-    .route("/", get(blog_usecase::root_page))
-    .route("/:file_name", get(blog_usecase::blog_page))
+    .route("/", get(root_page))
 }
