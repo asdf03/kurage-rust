@@ -11,5 +11,5 @@ use crate::usecase::blog_usecase::{
 pub fn create_blog_router() -> Router {
   Router::new()
     .route("/", get(root_page))
-    .route("/blog/:file_name", get(blog_page))
+    .route("/blog/:file_name", get( ))
 }

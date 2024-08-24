@@ -1,19 +1,19 @@
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Claims {
-    pub sub: String,
-    pub exp: usize,
+pub struct User {
+    id: String,
+    user_name: String,
+    password_hash: String,
 }
 
-#[derive(Deserialize)]
-pub struct RegisterForm {
-    pub email: String,
-    pub password: String,
-}
+impl User {
+    pub fn new(id: String, user_name: String, password_hash: String) -> Self {
+        Self {
+            id,
+            user_name,
+            password_hash,
+        }
+    }
 
-#[derive(Deserialize)]
-pub struct LoginForm {
-    pub email: String,
-    pub password: String,
+    pub fn veryfi_password(&self, password: &str) -> bool {
+        // Todo
+    }
 }
