@@ -13,7 +13,7 @@ impl User {
         }
     }
 
-    pub fn veryfi_password(&self, password: &str) -> bool {
+    pub fn veryfi_password(&self, password: &str) {
         // Todo
     }
 }

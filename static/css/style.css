@@ -41,10 +41,20 @@ img {
     justify-content: space-between;
 }
 
-.logo-box {
-    width: 5%;
+.site-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-title .logo-box {
+    width: 70px;
     border-radius: 50%;
     overflow: hidden;
+}
+
+.site-title .title-box {
+    padding: 20px;
 }
 
 .header-nav {

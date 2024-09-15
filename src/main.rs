@@ -4,9 +4,6 @@ mod infrastructure;
 mod interface;
 mod usecase;
 
-// use crate::infrastructure::db::create_db_pool;
-use crate::rest::auth::auth_register;
-
 use crate::rest::blog::create_blog_router;
 use crate::rest::static_files::create_static_router;
 
