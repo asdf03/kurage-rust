@@ -20,6 +20,21 @@ async fn load_template(template_name: &str) -> String {
 }
 
 pub async fn root_page() -> impl IntoResponse {
+  let folder_path = Path::new("../markdown_files");
+  println!("{:?}", folder_path);
+
+  for blog_page in fs::read_dir(folder_path) {
+    println!("OK");
+    let blog_page = blog_page;
+    println!("{:?}", blog_page);
+    // let blog_path = blog_page.path();
+    // if blog_path.is_file() {
+    //   println!("Processing file: {:?}", blog_path);
+    //   // ここでファイルに対する処理を実行
+    // }
+
+  }
+
   let html_header = load_template("header.html").await;
   let html_root = load_template("root.html").await;
   let html_footer = load_template("footer.html").await;

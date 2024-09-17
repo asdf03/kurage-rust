@@ -1,11 +1,5 @@
-mod domain;
-mod rest;
-mod infrastructure;
-mod interface;
-mod usecase;
-
-use crate::rest::blog::create_blog_router;
-use crate::rest::static_files::create_static_router;
+use kurage_rust::rest::blog::create_blog_router;
+use kurage_rust::rest::static_files::create_static_router;
 
 
 use axum::{
