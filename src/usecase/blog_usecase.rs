@@ -20,7 +20,8 @@ async fn load_template(template_name: &str) -> String {
 }
 
 pub async fn root_page() -> impl IntoResponse {
-  let folder_path = Path::new("../markdown_files");
+  let current_dir = std::env::current_dir().expect("Failed to get current_dir path");
+  let folder_path = current_dir.join("markdown_files");
   println!("{:?}", folder_path);
 
   for blog_page in fs::read_dir(folder_path) {
