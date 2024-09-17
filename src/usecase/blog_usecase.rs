@@ -22,12 +22,23 @@ async fn load_template(template_name: &str) -> String {
 pub async fn root_page() -> impl IntoResponse {
   let current_dir = std::env::current_dir().expect("Failed to get current_dir path");
   let folder_path = current_dir.join("markdown_files");
-  println!("{:?}", folder_path);
+  
+  match fs::read_dir(folder_path) {
+    Ok(entries) => {
+      for entry in entries {
+        match entry {
+          Ok(entry) => {
+            let path = entry.path();
+            if path.is_file() {
+              println!("OK");
+            }
+          }
+          Err(e) => println!("Error reading entry: {}", e),
+        }
+      }
+    }
+    Err(e) => println!("Error reading directory: {}", e),
 
-  for blog_page in fs::read_dir(folder_path) {
-    println!("OK");
-    let blog_page = blog_page;
-    println!("{:?}", blog_page);
     // let blog_path = blog_page.path();
     // if blog_path.is_file() {
     //   println!("Processing file: {:?}", blog_path);
