@@ -12,7 +12,7 @@ use std::{
   path::Path as StdPath
 };
 
-pub async fn static_files(
+pub async fn static_file(
   AxumPath((file_type, file_name)): AxumPath<(String, String)>
 ) -> Response<Body> {
   let file_path = StdPath::new("static").join(file_type).join(file_name);

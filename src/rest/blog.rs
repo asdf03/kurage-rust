@@ -3,12 +3,12 @@ use axum::{
   Router
 };
 
-use crate::usecase::blog_usecase::{
+use crate::usecase::blog::{
   root_page,
   blog_page
 };
 
-pub fn create_blog_router() -> Router {
+pub fn blog_router() -> Router {
   Router::new()
     .route("/", get(root_page))
     .route("/blog/:file_name", get(blog_page))
