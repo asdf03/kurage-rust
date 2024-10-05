@@ -38,7 +38,7 @@ let url_path = format!("/blog/{}", file_stem.to_string_lossy());
   
   for line in reader.lines() {
     let line = line?;
-    if line.starts_with("## ") {
+    if line.starts_with("# ") {
       let title = line.trim_start_matches("## ").to_string();
       blog_posts.push(BlogPost { url_path, title });
       break;
@@ -97,7 +97,7 @@ pub async fn blog_page(extractPath(file_name): extractPath<String>) -> impl Into
 	options.render.unsafe_ = true;
 
 	let html_output = markdown_to_html(&markdown_input, &options);
-	let html_header = load_template("header.html").await.replace("{title}", "Hoge");
+	let html_header = load_template("blog-header.html").await.replace("{title}", "Hoge");
 	let html_footer = load_template("footer.html").await;
 
 	let html_page = format!("{}{}{}", html_header, html_output, html_footer);
