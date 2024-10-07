@@ -42,28 +42,29 @@ fn process_markdown_file(path: &Path, blog_posts: &mut Vec<BlogPost>) -> std::io
     Ok(())
 }
 
-pub async fn root_page() -> impl IntoResponse {
+pub async fn root_page() -> Result<impl IntoResponse, ()> {
     let current_dir = current_dir().expect("Failed to get current_dir path");
     let folder_path = current_dir.join("markdown_files");
     let mut blog_posts = Vec::new();
     
     if let Err(e) = fs::read_dir(&folder_path) {
       println!("Error reading directory: {}", e);
-    } else {
-        for entry in fs::read_dir(folder_path).unwrap() {
-            let entry = match entry {
-                Ok(entry) => entry,
-                Err(e) => {
-                    println!("Error reading entry: {}", e);
-                    continue;
-                }
-            };
+      return Err(());
+    }
 
-            let path = entry.path();
-            if path.is_file() {
-                if let Err(e) = process_markdown_file(&path, &mut blog_posts) {
-                    println!("Error processing file {:?}: {}", path, e);
-                }
+    for entry in fs::read_dir(folder_path).unwrap() {
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(e) => {
+                println!("Error reading entry: {}", e);
+                continue;
+            }
+        };
+
+        let path = entry.path();
+        if path.is_file() {
+            if let Err(e) = process_markdown_file(&path, &mut blog_posts) {
+                println!("Error processing file {:?}: {}", path, e);
             }
         }
     }
@@ -82,5 +83,5 @@ pub async fn root_page() -> impl IntoResponse {
   
     let html_page = format!("{}{}{}", html_header, html_root, html_footer);
   
-    Html(html_page)
+    Ok(Html(html_page))
   }
