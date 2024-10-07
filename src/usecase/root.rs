@@ -47,23 +47,25 @@ pub async fn root_page() -> impl IntoResponse {
     let folder_path = current_dir.join("markdown_files");
     let mut blog_posts = Vec::new();
     
-    match fs::read_dir(folder_path) {
-      Ok(entries) => {
-        for entry in entries {
-          match entry {
-            Ok(entry) => {
-              let path = entry.path();
-              if path.is_file() {
-                if let Err(e) = process_markdown_file(&path, &mut blog_posts) {
-                  println!("Error processing file {:?}: {}", path, e);
+    if let Err(e) = fs::read_dir(&folder_path) {
+      println!("Error reading directory: {}", e);
+    } else {
+        for entry in fs::read_dir(folder_path).unwrap() {
+            let entry = match entry {
+                Ok(entry) => entry,
+                Err(e) => {
+                    println!("Error reading entry: {}", e);
+                    continue;
                 }
-              }
+            };
+
+            let path = entry.path();
+            if path.is_file() {
+                if let Err(e) = process_markdown_file(&path, &mut blog_posts) {
+                    println!("Error processing file {:?}: {}", path, e);
+                }
             }
-            Err(e) => println!("Error reading entry: {}", e),
-          }
         }
-      }
-      Err(e) => println!("Error reading directory: {}", e),
     }
   
     println!("{:#?}", blog_posts);
