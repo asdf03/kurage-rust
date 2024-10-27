@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+    server:
+        build:
+            context: .
+            target: server
+        ports:
+            - "8080:8080"
+        command: >
+            /bin/sh -c "
+                cargo build --release &&
+                cargo run --release
+            "
+    client: 
+        build:
+            context: .
+            target: client
+        depends_on:
+            - server
+            - selenium-chrome
+        command: >
+            /bin/sh -c "
+                wait-for-it -t 0 server:8080 &&
+                cargo test --test e2e_test
+            "
