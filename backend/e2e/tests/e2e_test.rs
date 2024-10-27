@@ -1,3 +1,5 @@
+use tokio;
+
 #[cfg(test)]
 mod e2e_test {
     use super::*;
