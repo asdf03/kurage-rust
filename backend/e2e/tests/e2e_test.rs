@@ -6,9 +6,13 @@ mod e2e_test {
 
     #[tokio::test]
     async fn test() {
-        let expected = "hoge";
+        let client = reqwest::Client::new();
+        let response = client.get("http://server:8000")
+            .send()
+            .await
+            .expect("Failed to send request");
 
-        assert!(expected.contains("hoge"));
+        assert!(response.status().is_success());
     }
 
 }
