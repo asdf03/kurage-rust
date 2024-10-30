@@ -14,20 +14,6 @@ rustを使用した高速なcmsを開発中
 - backendフォルダ ... Rust製のAPIサーバー (port: 8000番)
 - frontendフォルダ ... Next.jsのSSR用フロントエンドサーバー (port: 3000番)
 
-## ローカルでの確認方法 (docker compose)
-
-composeを使用してコンテナを立ち上げる
-
-```
-$ docker compose up
-```
-
-立ち上がるコンテナは３つ
-
-- server ... rustのAPIサーバー
-- front ... Nextのfrontサーバー
-- e2e ... e2eテストを自動で実行するサーバー
-
 ## ローカルでの確認方法 (docker不使用)
 
 まずはbackendサーバーを立ち上げる
